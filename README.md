@@ -1,7 +1,7 @@
 
 ![sealion_logotype_256_alpha](https://github.com/wicknix/SeaLion/assets/39230578/91143f53-c942-40ed-b5f8-7cb752ab9187)
 
-A web browser for Intel MacOS 10.7 - 14.8 & Linux.
+A web browser for Intel MacOS 10.7 - 14.8, Linux, and 64-bit Windows.
 
 Built upon the [unified XUL platform](https://repo.palemoon.org/MoonchildProductions/UXP).
 
@@ -32,8 +32,39 @@ What is not included
 * Lightweight Themes/Toolbar Backgrounds
 * Language Packs (English only)
 * The full suite. If you want that check out [BrassMonkey](https://github.com/wicknix/brass-monkey)
-* MS Windows support
+* A Windows installer. 64-bit Windows builds and runs from `dist\bin`; see below. There is no NSIS setup program.
 
+
+Building on 64-bit Windows
+=========================================================================
+
+The checked-in `.mozconfig` is still the macOS cross-compile setup. On Windows, build from the repository root with `win-mach.cmd`. It picks `.mozconfig-windows`, prefers MozillaBuild's Python 3, and follows the directory the script lives in, so another checkout path works without editing the script.
+
+`win-mach.cmd` looks for MozillaBuild in `MOZILLABUILD`, then `C:\mozilla-build`. The source path must not contain spaces.
+
+```
+win-mach.cmd clobber
+win-mach.cmd build
+win-mach.cmd /mozillabuild D:\mozilla-build build
+```
+
+What this machine used successfully:
+
+* MozillaBuild 3.4
+* Visual Studio 18 Community (MSVC 14.51) and Windows SDK 10.0.28000.0
+* UXP tag `RB_20260602` (the 2026-06-02 release named by SeaLion 34.3.0) checked out into `platform/`
+
+The official UXP URLs were not reachable from here (`github.com/MoonchildProductions/UXP` is missing, and `repo.palemoon.org` redirects offline). The tree that built is the FranklinDM mirror:
+
+```
+git clone --depth 1 --branch RB_20260602 https://github.com/FranklinDM/UXP.git platform
+```
+
+The `vswhere.exe` shipped in that UXP tag does not see Visual Studio 18. Configure found the compiler after replacing `platform/build/win32/vswhere.exe` with a newer `vswhere` (3.1.7 from the Visual Studio installer). `client.mk` also refuses a MinGW build when it contains Windows CR line endings; the application tree needs LF.
+
+Quit SeaLion before `clobber`. A running `sealion.exe` locks files in the object directory and the delete fails.
+
+The program is `obj-x86_64-pc-mingw32\dist\bin\sealion.exe`. That file is only the launcher. Keep the whole `dist\bin` directory with it (`xul.dll` and the rest of the runtime). `win-mach.cmd package` does not produce a zip: packaging still expects `bin/uninstall/helper.exe`, and `navigator/installer/windows` is not part of this tree.
 
 Available Extensions for SeaLion
 ======================
