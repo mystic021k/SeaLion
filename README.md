@@ -3,6 +3,8 @@
 
 A web browser for Intel MacOS 10.7 - 14.8, Linux, and 64-bit Windows.
 
+Original source: https://github.com/wicknix/SeaLion
+
 Built upon the [unified XUL platform](https://repo.palemoon.org/MoonchildProductions/UXP).
 
 What features are included
