@@ -68,6 +68,21 @@ Quit SeaLion before `clobber`. A running `sealion.exe` locks files in the object
 
 The program is `obj-x86_64-pc-mingw32\dist\bin\sealion.exe`. That file is only the launcher. Keep the whole `dist\bin` directory with it (`xul.dll` and the rest of the runtime). `win-mach.cmd package` does not produce a zip: packaging still expects `bin/uninstall/helper.exe`, and `navigator/installer/windows` is not part of this tree.
 
+Building SeaMail on 64-bit Windows
+=========================================================================
+
+SeaMail is a separate program (`seamail.exe`). Mail, compose, and Lightning calendar are part of that build. `mailnews` is linked into its `xul.dll`; it is not its own executable. Use `win-mach-mail.cmd` and `.mozconfig-windows-mail`. That mozconfig sets `MOZ_OBJDIR` to `obj-seamail-x86_64-pc-mingw32`, so `clobber` and `build` do not touch SeaLion's `obj-x86_64-pc-mingw32`.
+
+```
+win-mach-mail.cmd clobber
+win-mach-mail.cmd build
+win-mach-mail.cmd /mozillabuild D:\mozilla-build build
+```
+
+The mail configuration turns on mailnews, OAuth2, compose, Lightning (including the Google calendar provider), and LDAP. Calendar stays enabled because the file does not pass `--disable-calendar`. MAPI is off: the installed Windows SDK does not include `mapix.h`, and the Outlook address-book sources fail without it. AV1 is left off: this machine has no NASM, which dav1d needs. The checked-in `mozcfg-mail` is still the macOS cross-compile file.
+
+Quit SeaMail before `win-mach-mail.cmd clobber`. The program will be `obj-seamail-x86_64-pc-mingw32\dist\bin\seamail.exe`, and it needs the rest of that `dist\bin` directory. The NSIS uninstaller is not built: the generated `defines.nsi` is rejected by NSIS 3, and `seamail.exe` does not need `helper.exe` to run.
+
 Available Extensions for SeaLion
 ======================
 * adblock latitude - ad blocker

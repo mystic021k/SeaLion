@@ -7,12 +7,9 @@ include $(topsrcdir)/config/config.mk
 
 include $(topsrcdir)/config/rules.mk
 
-ifdef MAKENSISU
-# For Windows build the uninstaller during the application build since the
-# uninstaller is included with the application for mar file generation.
-libs::
-	$(MAKE) -C installer/windows uninstaller
-endif
+# The Windows uninstaller is not built here. NSIS 3 rejects the generated
+# defines.nsi (empty AppVersion, and GREVersion escaped with backslashes).
+# seamail.exe does not need helper.exe to run.
 
 
 # As a fallout from bug 1247162, the sourcestamp in application.ini and

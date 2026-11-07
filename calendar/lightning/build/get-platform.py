@@ -10,4 +10,4 @@ from xml.dom.minidom import parse
 
 doc = parse(sys.argv[1] + "/install.rdf")
 elem = doc.getElementsByTagName("em:targetPlatform")[0]
-print elem.firstChild.nodeValue
+print(elem.firstChild.nodeValue)

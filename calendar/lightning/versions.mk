@@ -4,7 +4,7 @@
 
 # Lighting version number
 THUNDERBIRD_VERSION := $(shell cat $(topsrcdir)/mail/config/version.txt)
-SEAMONKEY_VERSION := "2.49"
+SEAMONKEY_VERSION := 2.49
 
 ifdef MOZ_SUITE
 LIGHTNING_VERSION := $(shell $(PYTHON) $(topsrcdir)/calendar/lightning/build/makeversion.py $(THUNDERBIRD_VERSION))
@@ -19,12 +19,14 @@ GDATA_VERSION := $(shell $(PYTHON) $(topsrcdir)/calendar/providers/gdata/makever
 # Alpha versions 10.0a1 and 10.0a2 aren't affected
 # For Seamonkey, 2.17 becomes 2.17.*, 2.17.1 becomes 2.17.*
 # For Thunderbird, 10.0 becomes 10.*, 10.0.1 becomes 10.*
+# GNU make treats ")" inside $(shell) as the end of the function, so the old
+# sed expressions never ran and left SEAMONKEY_MAXVERSION undefined.
 THUNDERBIRD_MAXVERSION := $(THUNDERBIRD_VERSION)
 ifneq (a,$(findstring a,$(THUNDERBIRD_VERSION)))
-THUNDERBIRD_MAXVERSION := $(shell echo $(THUNDERBIRD_VERSION) | sed 's|\(^[0-9]*\)\.\([0-9]*\).*|\1|' ).*
+THUNDERBIRD_MAXVERSION := $(firstword $(subst ., ,$(THUNDERBIRD_VERSION))).*
 endif
 
 SEAMONKEY_MAXVERSION := $(SEAMONKEY_VERSION)
 ifneq (a,$(findstring a,$(SEAMONKEY_VERSION)))
-SEAMONKEY_MAXVERSION := $(shell echo $(SEAMONKEY_VERSION) | sed 's|\(^[0-9]*.[0-9]*\).*|\1|' ).*
+SEAMONKEY_MAXVERSION := $(firstword $(subst ., ,$(firstword $(SEAMONKEY_VERSION)))).$(word 2,$(subst ., ,$(SEAMONKEY_VERSION))).*
 endif
