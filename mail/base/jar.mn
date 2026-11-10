@@ -6,6 +6,10 @@ messenger.jar:
 % overlay chrome://global/content/viewSource.xul chrome://messenger/content/viewSourceOverlay.xul
 % overlay chrome://global/content/config.xul chrome://messenger/content/configEditorOverlay.xul
 % overlay chrome://editor/content/EdSpellCheck.xul chrome://messenger/content/EdSpellCheckOverlay.xul
+#ifndef MOZ_CLASSIC_ACCOUNT_WIZARD
+% overlay chrome://messenger/content/AccountWizard.xul chrome://messenger/content/AccountWizardOverlay.xul
+#endif
+% overlay chrome://messenger/content/msgAccountCentral.xul chrome://messenger/content/msgAccountCentralOverlay.xul
 % style chrome://global/content/customizeToolbar.xul chrome://messenger/content/messenger.css
 % style chrome://global/content/customizeToolbar.xul chrome://messenger/skin/
 % style chrome://global/content/customizeToolbar.xul chrome://messenger/skin/addressbook/addressbook.css
@@ -72,6 +76,9 @@ messenger.jar:
     content/messenger/newTagDialog.xul              (content/newTagDialog.xul)
     content/messenger/newTagDialog.js               (content/newTagDialog.js)
 *   content/messenger/viewSourceOverlay.xul         (content/viewSourceOverlay.xul)
+    content/messenger/AccountWizardOverlay.xul      (content/AccountWizardOverlay.xul)
+    content/messenger/AccountWizardOverlay.js       (content/AccountWizardOverlay.js)
+    content/messenger/msgAccountCentralOverlay.xul (content/msgAccountCentralOverlay.xul)
     content/messenger/configEditorOverlay.xul       (content/configEditorOverlay.xul)
     content/messenger/EdSpellCheckOverlay.xul       (content/EdSpellCheckOverlay.xul)
     content/messenger/EdSpellCheckOverlay.js        (content/EdSpellCheckOverlay.js)
